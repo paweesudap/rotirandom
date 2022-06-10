@@ -1,0 +1,412 @@
+<!-- CSS299 Example, adopted from https://threejsfundamentals.org -->
+<!--
+Youtube Link:
+Presentation Date and Time:
+Group: 00CCCC
+First Name: Paweesuda Pearnvittayavat
+Student ID: 6209610051
+E-mail: yokky700@gmail.com
+Last Name: Phensiri Boonpitak
+Student ID: 6209610259
+E-mail: phensiri23_@hotmail.com
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>CS299 Example</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css%22%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mitr&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+  <style type="text/css">
+    body {
+      margin: 0px;
+      overflow: hidden;
+      height: 100%;
+      background-image: url(sky2.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
+    #c {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .fade {
+            opacity: 0;
+            -webkit-transition: opacity 1s linear;
+            transition: opacity 1s linear;
+        }
+    #text{
+            margin: 0 auto;
+            text-align: center;
+            vertical-align: center;
+            position: absolute;
+            top: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-family: 'Mitr', sans-serif;
+    }
+    #textp{
+            
+            text-align: center;
+            vertical-align: center;
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Mitr', sans-serif;
+    }
+    #textpp{
+            
+            text-align: center;
+            vertical-align: center;
+            font-size: 25px;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Mitr', sans-serif;
+    }
+    .container{
+        margin: 0 auto;
+        margin-top: 5%;
+        display: block;
+        text-align: center;
+        width: 1000px;
+    }
+    .myButton {
+	    box-shadow: 0px 1px 0px 0px #f0f7fa;
+	    background:linear-gradient(to bottom, #33bdef 5%, #019ad2 100%);
+	    background-color:#33bdef;
+	    border-radius:6px;
+	    border:1px solid #057fd0;
+	    display:inline-block;
+    	cursor:pointer;
+	    color:#ffffff;
+	    font-family:Arial;
+	    font-size:20px;
+	    font-weight:bold;
+	    padding:6px 24px;
+	    text-decoration:none;
+	    text-shadow:0px -1px 0px #5b6178;
+    }
+    .myButton:hover {
+	    background:linear-gradient(to bottom, #019ad2 5%, #33bdef 100%);
+	    background-color:#019ad2;
+    }
+    .myButton:active {
+	    position:relative;
+	    top:1px;
+    }
+    .button{
+      box-shadow: 0px 1px 0px 0px #f0f7fa;
+	    background:linear-gradient(to bottom, #33bdef 5%, #019ad2 100%);
+	    background-color:#33bdef;
+	    border-radius:6px;
+	    border:1px solid #057fd0;
+	    display:inline-block;
+    	cursor:pointer;
+	    color:#ffffff;
+	    font-family:Arial;
+	    font-size:25px;
+	    font-weight:bold;
+	    padding:6px 24px;
+	    text-decoration:none;
+	    text-shadow:0px -1px 0px #5b6178;
+    }
+    .button:hover {
+	    background:linear-gradient(to bottom, #019ad2 5%, #33bdef 100%);
+	    background-color:#019ad2;
+    }
+    .button:active {
+	    position:relative;
+	    top:1px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+
+<script src="libs/stats.min.js"></script>
+<script src="libs/three.min.js"></script>
+<!--create random button to random text-->
+<div class="container">
+  <container id="text">
+    <div class="container content has-text-centered">
+        <p>
+          <button id="random" class="button is-success",class="myButton">Random</button>
+        </p>
+  <p id="output">สถานะของคุณตอนนี้!!!</p>
+  </div>
+</container>
+</div>
+
+</section>
+
+
+<script type="module">
+  //import modules
+  import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+  import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+  import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
+  import * as SkeletonUtils from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/utils/SkeletonUtils.js';
+  import { GUI } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/libs/dat.gui.module.js';
+  import { FBXLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/FBXLoader.js';   
+  import { EffectComposer } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/EffectComposer.js';
+  import { RenderPass } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/RenderPass.js';
+  import { UnrealBloomPass } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/UnrealBloomPass.js';
+  import { Material, MeshPhongMaterial, MeshToonMaterial } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+
+  function main() {
+    const canvas = document.querySelector('#c');
+    const renderer = new THREE.WebGLRenderer({canvas});
+
+    const fov = 50;
+    const aspect = window.width / window.height;  
+    const near = 0.1;
+    const far = 3000;
+    //set camera position
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(0, 10, 50);
+    //set controls ชนิด orbit
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 10, 0);
+    controls.update();
+
+    const stat = new Stats();
+    //lcreate scene
+    const scene = new THREE.Scene();
+    //add music
+    const audioListener = new THREE.AudioListener();
+    camera.add( audioListener );
+    const oceanAmbientSound = new THREE.Audio( audioListener );
+    scene.add( oceanAmbientSound );
+    const loader = new THREE.AudioLoader();
+    loader.load('Running.ogg',function ( audioBuffer ) {
+		oceanAmbientSound.setBuffer( audioBuffer );
+		oceanAmbientSound.play();
+        oceanAmbientSound.setLoop(true);
+  	},
+    // onProgress callback
+	  function ( xhr ) {
+		  console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+	  },
+
+	  // onError callback
+	  function ( err ) {
+		  console.log( 'An error happened' );
+	  }
+  );
+
+  //add light to scene
+  function addLight(...pos) {
+    const color = 0xFFFFFF;
+    const intensity = 1.2;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(...pos);
+    light.castShadow = true;
+    scene.add(light);
+    scene.add(light.target);
+  }
+  addLight(5, 5, 2);
+  addLight(-5, 5, 5);
+  addLight(5,0,3);
+  //add ambient light
+  var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+  scene.add(ambientLight);
+  const manager = new THREE.LoadingManager();
+  manager.onLoad = init;
+
+  //load gltf model
+  const models = {
+    idle:    { url: 'running.gltf' },
+  };
+  {
+    const gltfLoader = new GLTFLoader(manager);
+    for (const model of Object.values(models)) {
+      gltfLoader.load(model.url, (gltf) => {
+        model.gltf = gltf;
+      });
+    }
+  }
+  //animate model
+  function prepModelsAndAnimations() {
+    Object.values(models).forEach(model => {
+      const animsByName = {};
+      model.gltf.animations.forEach((clip) => {
+        animsByName[clip.name] = clip;
+      });
+      model.animations = animsByName;
+    });
+  }
+
+  const mixers = [];
+  
+  //create roads
+  var roads = new Array(10);
+  var light_road;
+  var speedZ = 0.6;
+  var started = true;
+  
+  function addRoads(){
+    let texture = new THREE.TextureLoader().load("textures/br.jpg");
+    for(let i=0;i<roads.length;i++){
+        roads[i] = new THREE.Mesh(
+            new THREE.PlaneGeometry(50,100,10,10),
+            new THREE.MeshPhongMaterial({map:texture}),
+        );
+        roads[i].position.z = -(i*100);
+        roads[i].rotation.x = -Math.PI/2;
+        scene.add(roads[i]);
+    }
+  }
+  //animate roads
+  function play(){
+    for(let i=0;i<roads.length;i++){
+		roads[i].position.z += speedZ;
+		//0, 1, 2
+		if(roads[i].position.z > 80){
+			 if(i-1>=0){
+				 roads[i].position.z = roads[i-1].position.z-80;
+			 }else{
+				 roads[i].position.z = roads[roads.length-1].position.z-80;
+			 }
+		}
+	}
+  }
+  
+  function init() {
+   
+    prepModelsAndAnimations();
+
+    Object.values(models).forEach((model, ndx) => {
+      const clonedScene = SkeletonUtils.clone(model.gltf.scene);
+      const root = new THREE.Object3D();
+      root.add(clonedScene);
+      scene.add(root);
+      root.position.x = (ndx - 1) * 3;
+
+      const mixer = new THREE.AnimationMixer(clonedScene);
+      const firstClip = Object.values(model.animations)[0];
+      const action = mixer.clipAction(firstClip);
+
+      action.play();
+      mixers.push(mixer);
+    });
+
+    //add light 
+    for(let i=0;i<3;i++){
+      light_road = new THREE.PointLight( 0xFFFFFF, 0.5, 1000 );
+	    light_road.position.set( 10, 80, 500-(i*900));
+	    scene.add( light_road );
+    }
+    addRoads();
+
+  }
+
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      renderer.setSize(width, height, false);
+    }
+    return needResize;
+  }
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;
+
+    if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+
+    for (const mixer of mixers) {
+      mixer.update(deltaTime);
+    }
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+    //set roads to play when open html
+	  stat.begin();
+    if(started){
+        play();
+    }
+	  stat.end();
+  }
+
+  requestAnimationFrame(render);
+  //set bg image
+  scene.background = new THREE.TextureLoader().load("bgboth2.jpg");
+  
+}
+//เรียก modal ออกมาแสดง	
+var show = function(){
+    $('#myModal').modal('show');
+};
+ 
+/* กำหนดเวลาหลังเปิดหน้าเว็บ ว่าจะให้แสดงหลังโหลดหน้าเว็บแล้วกี่วินาที  เช่น 2000 = 2 วิ */
+$(window).load(function(){
+    var timer = window.setTimeout(show,500);
+});
+main();
+let lyricArray = [
+    'อยากให้เธอลองรัก เหมือนครั้งแรกที่เธอได้พบรัก','โปรดรักฉันรักฉันเถอะนะ จะไม่ทำให้เธอเสียใจ','จิตใจทำด้วยอะไร เหตุใดจึงไม่รักกัน',
+    'คงจะมีรักจริงรออยู่ ที่ดินแดนใดสักแห่ง','ไม่ว่ากี่เหตุผลที่เธอบอก ไม่ว่ากี่คำพูดที่เธอคอยอธิบาย', 'Oh ma boy oh ma boy baby','ทางที่ดี คือทางลาดยาง',
+    'หัวใจเต้นแรง หน้าแดงทุกที','อยากจะมองให้ชัด ชัดกว่านี้อีกหน่อย','Internet is 4g but my heart is 4 you','Cause we are queens and king',
+    'หน้าชา ปากชา ขาชา ไอนั่นก็ชา','ก็คอมันแห้ง ที่คอมันแห้งเพราะเอาแต่นอนร้องไห้','เด็กดื้อมันดูไม่ดี มาเป็นเด็กพี่ดีไหม','ฉันผิดเอง ที่ดูดีมากไป','แอบหลงรักเธออยุู่ แต่เธอคงดูไม่ออก',
+    'เกิดมาไม่เคย เจอใครเหมือนเธอ','หลับตาลง ก็เห็นแต่ใบหน้าเธอ','ก็เลยมาร้องเพลงบอก แค่อยากให้เธอนั้นเข้าใจ','We gonna move like jagger','It\'s a love story we just say yes',
+    'Neol jo ha hae','Money can buy us happiness','You got me feeling like a psycho','หนุ่มฟ้อหล่อเฟี้ยว มีผมคนเดียวรูปหล่อจริงๆนะเนี่ย','ห้ามตัวเองไม่ให้รักเธอ แต่ทำยังไงใจมันไม่ฟัง','ฆ่าฉันเถอะคนดี แต่อย่าเดินหนีฉันไป',
+    'ฆ่าฉันให้ตายดีกว่า อย่าเห็นฉันเป็นสนามอารมณ์','เจ็บแค้นเคืองโกรธ โทษฉันใย','เธอแค่ต้องการ ให้ดูใจร้ายน้อยลงไป','ถ้าเะอให้ฉันเป็นเพื่อนเล่น อย่าเล่นเกินกว่านั้นได้ไหม',
+    'จำเลยอย่าแย้ง หากยังไม่มีอะไรจะกล่าว','ไม่เอากอดสุดท้ายไม่เอาจูบลา ไม่ต้องการใดๆ','ก่อนเธอจะลา ไม่ต้องมาบอกว่ารัก','วันที่11เดือน12น้ำนองในตาฉัน เห็ยเค้ารักกันตัวฉันมันบ้าเอง','เที่ยงคืนฉันออกมาคอยเธอ ก็ลันลั้นลา',
+    'อย่าสาดน้ำได้ไหม ช่วยเห็นใจกันบ้าง','ความจริงมีเพียงหนึ่งเดียว แค่สิ่งเดียวแค่อย่างเดียวแค่เรื่องเดียวแค่เหตุผลเดียว','ในคำว่ารักของเธอนั้นคือแบบไหน ที่ผ่านมาหรือแค่อยากให้ฉันทรมาน','อย่าทำให้รักเดี๋ยวมันหลงเดี๋ยวมันรัก ฉันตั้งหลักไม่ทันเดี๋ยวจะรั้งใจไม่ไหว'  
+  ]; 
+    
+    let randomButton = document.getElementById('random');
+    let output = document.getElementById('output');
+    
+    randomButton.addEventListener('click', () => {
+        let n = lyricArray.length;
+        let index = Math.floor(Math.random()*n);
+        let lyric = lyricArray[index];
+        output.innerHTML = lyric;
+    })
+</script>
+
+<!-- modal (pop up)-->
+<div id="myModal" class="modal fade" >
+  <div class="modal-dialog modal-md" > <!-- กำหนดขนาดของ modal -->
+    <div class="modal-content" >
+      <div class="modal-header" style="background-color: cadetblue;">
+        <h4 class="modal-title"> <p id="textpp">สวัสดี! ผมชื่อโรตี</p></h4>
+      </div>
+      <div class="modal-body" style="background-color: cyan;" >
+        <center>
+        <p id="textp"> ยินดีที่ได้รู้จัก <br> ลองคลิ้กที่ Random ดูสิ</p>
+        <img src="roti4.png" /><br>
+        <button type="button" class="myButton" data-dismiss="modal" aria-hidden="true" id="textp" >ฉันเข้าใจแล้ว</button>
+      </center>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
